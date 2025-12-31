@@ -26,7 +26,7 @@ router.post(
 router.get("/", getPlaces);
 
 // ===================================================
-// 📍 GET SINGLE PLACE
+// 📍 GET SINGLE PLACE BY ID (Public)
 // ===================================================
 router.get("/:id", getPlaceById);
 

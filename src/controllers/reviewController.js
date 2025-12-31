@@ -1,6 +1,5 @@
-const Review = require('../models/Review');
-const Place = require('../models/Place');
-
+const Review = require("../models/Review");
+const Place = require("../models/placeModel");
 
 // ➕ ADD REVIEW (Protected)
 const addReview = async (req, res) => {
@@ -23,7 +22,7 @@ const addReview = async (req, res) => {
       reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
     await Place.findByIdAndUpdate(placeId, {
-      avgRating: avgRating.toFixed(1),
+      avgRating: Number(avgRating.toFixed(1)), // ✅ FIXED
       numReviews: reviews.length,
     });
 
@@ -32,7 +31,7 @@ const addReview = async (req, res) => {
     if (error.code === 11000) {
       return res
         .status(400)
-        .json({ message: 'You already reviewed this place' });
+        .json({ message: "You already reviewed this place" });
     }
 
     res.status(500).json({ message: error.message });
@@ -44,7 +43,7 @@ const getReviewsByPlace = async (req, res) => {
   try {
     const reviews = await Review.find({
       place: req.params.placeId,
-    }).populate('user', 'name');
+    }).populate("user", "name");
 
     res.json(reviews);
   } catch (error) {
